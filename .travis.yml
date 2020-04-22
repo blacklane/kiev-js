@@ -1,0 +1,11 @@
+language: node_js
+# default install is "npm ci"
+# default script is "npm test"
+# more @ https://docs.travis-ci.com/user/languages/javascript-with-nodejs/
+
+deploy:
+  provider: npm
+  email: "it-lambda+npm@blacklane.com"
+  api_key: "YOUR_AUTH_TOKEN"
+  on:
+    tags: true
