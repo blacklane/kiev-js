@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -9,6 +9,9 @@
   ],
   "engines": {
     "node": ">=12"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "start": "tsdx watch",
@@ -29,7 +32,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "kiev-js",
+  "name": "@blacklane/kiev",
   "author": "Blacklane",
   "module": "dist/kiev-js.esm.js",
   "devDependencies": {
@@ -46,5 +49,20 @@
     "tsdx": "^0.13.2",
     "tslib": "^1.11.1",
     "typescript": "^3.8.3"
-  }
+  },
+  "description": "This project was bootstrapped with [TSDX](https://github.com/jaredpalmer/tsdx).",
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blacklane/kiev-js.git"
+  },
+  "keywords": [
+    "logger",
+    "kiev",
+    "logging"
+  ],
+  "bugs": {
+    "url": "https://github.com/blacklane/kiev-js/issues"
+  },
+  "homepage": "https://github.com/blacklane/kiev-js#readme"
 }
