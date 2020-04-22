@@ -1,6 +1,7 @@
 language: node_js
 deploy:
   - provider: npm
+    skip_cleanup: true
     email:
       secure: P2Lbx1vZM/R+Z3yJLbmcPLxLpPMQictTZCNsD6NOb5t/VFZ8gYQgrcvDnJqInHjf3njxkKZKe3lmOqL7eq2ezd9wOzjT0UUBjOjEylB7lRcntjzN7k6tQyC1PZJChLmrX/GY6/0H8lBSCDjTyYZw2OeN7s9M/VmA8UqgjL12340VKM1R6bJhfEjdPTSxOK14GJdyOJbzTlskTy0qwak3qxnYEbxwRny67jhgefmHqyI2vP88xMVUbY1505kKvsLiJUpqZbr3oJChhtvm6TSm9dCYUbyBxEyznaMbj6bnxt0p4jVY2POk8prgU6QiwbyTh2kdOj6O53Q2XDc0sB784dXX9B5efybfOe41/cYDglhChzCXNSGBuh9zq20VGvDQlV5jUMV0DlfYnJOlDJiBKrRdjk2gYYskesn81jFcAvNf+Qcu8QD95i8TOlWL8pf9qlWCjOfQPB2RV9Kl83hmuuL+wZSavQBi3s2C/oEuHWfdSUGE0h8YA/YXHVvGM9mYovgA/+L0QXqQexnLC/XBxLUW68jY4bn85f9i9kwbY6cJQeqJJeEiB/T/uLhkQ/LZD03G+zxLBtpOca5ahTC4IPPG/u3Cqai93DAFaEG/c28/5UFr59S/kQiW9bawEjOwcd3BQwrX77JcgQoo4xHuwOmIZpOilkHk80gr8a3EJN4=
     api_key:
@@ -8,6 +9,7 @@ deploy:
     on:
       tags: true
   - provider: npm
+    skip_cleanup: true
     email:
       secure: P2Lbx1vZM/R+Z3yJLbmcPLxLpPMQictTZCNsD6NOb5t/VFZ8gYQgrcvDnJqInHjf3njxkKZKe3lmOqL7eq2ezd9wOzjT0UUBjOjEylB7lRcntjzN7k6tQyC1PZJChLmrX/GY6/0H8lBSCDjTyYZw2OeN7s9M/VmA8UqgjL12340VKM1R6bJhfEjdPTSxOK14GJdyOJbzTlskTy0qwak3qxnYEbxwRny67jhgefmHqyI2vP88xMVUbY1505kKvsLiJUpqZbr3oJChhtvm6TSm9dCYUbyBxEyznaMbj6bnxt0p4jVY2POk8prgU6QiwbyTh2kdOj6O53Q2XDc0sB784dXX9B5efybfOe41/cYDglhChzCXNSGBuh9zq20VGvDQlV5jUMV0DlfYnJOlDJiBKrRdjk2gYYskesn81jFcAvNf+Qcu8QD95i8TOlWL8pf9qlWCjOfQPB2RV9Kl83hmuuL+wZSavQBi3s2C/oEuHWfdSUGE0h8YA/YXHVvGM9mYovgA/+L0QXqQexnLC/XBxLUW68jY4bn85f9i9kwbY6cJQeqJJeEiB/T/uLhkQ/LZD03G+zxLBtpOca5ahTC4IPPG/u3Cqai93DAFaEG/c28/5UFr59S/kQiW9bawEjOwcd3BQwrX77JcgQoo4xHuwOmIZpOilkHk80gr8a3EJN4=
     api_key:
