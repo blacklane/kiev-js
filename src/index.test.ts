@@ -1,6 +1,6 @@
 import logger from '.'
 
-describe('Logger', () => {
+describe('logger', () => {
   describe('info', () => {
     it('generates a log with level info', () => {
       expect.assertions(2)

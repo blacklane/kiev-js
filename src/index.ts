@@ -12,7 +12,12 @@ enum LogLevel {
  * @param messageEvent is the name of the system event (BookingFound, BookingNotFound and etc). The default value is 'request'.
  * @param logLevel is the log level (info, warn, error).
  */
-function createMessage (message: unknown, event: string, messageEvent: string, logLevel: LogLevel): string {
+function createMessage (
+  message: unknown,
+  event: string,
+  messageEvent: string,
+  logLevel: LogLevel
+): string {
   return JSON.stringify({
     timestamp: new Date().toISOString(),
     log_level: logLevel,
