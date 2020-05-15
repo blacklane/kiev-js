@@ -12,6 +12,7 @@ enum LogLevel {
  * @param messageEvent is the name of the system event (BookingFound, BookingNotFound and etc). The default value is 'request'.
  * @param logLevel is the log level (info, warn, error).
  */
+// prettier-ignore
 function createMessage (
   message: unknown,
   event: string,
@@ -36,6 +37,7 @@ function createMessage (
  * @param event  is the name of request event (request_started, request_finished and etc)
  * @param messageEvent is the name of the system event (BookingFound, BookingNotFound and etc). The default value is 'request'.
  */
+// prettier-ignore
 function info (message: unknown, event: string, messageEvent: string): void {
   console.info(createMessage(message, event, messageEvent, LogLevel.INFO))
 }
@@ -47,6 +49,7 @@ function info (message: unknown, event: string, messageEvent: string): void {
  * @param event  is the name of request event (request_started, request_finished and etc)
  * @param messageEvent is the name of the system event (BookingFound, BookingNotFound and etc). The default value is 'request'.
  */
+// prettier-ignore
 function warn (message: unknown, event: string, messageEvent: string): void {
   console.warn(createMessage(message, event, messageEvent, LogLevel.WARN))
 }
@@ -58,6 +61,7 @@ function warn (message: unknown, event: string, messageEvent: string): void {
  * @param event  is the name of request event (request_started, request_finished and etc)
  * @param messageEvent is the name of the system event (BookingFound, BookingNotFound and etc). The default value is 'request'.
  */
+// prettier-ignore
 function error (message: unknown, event: string, messageEvent: string): void {
   console.error(createMessage(message, event, messageEvent, LogLevel.ERROR))
 }
