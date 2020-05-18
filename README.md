@@ -1,5 +1,7 @@
 # Kiev-js
 
+[![Build status badge](https://travis-ci.com/blacklane/kiev-js.svg?token=eqEro8Uh7aLKHHx8ps1S&branch=master)](https://travis-ci.com/blacklane/kiev-js)
+
 A lightweight logging library to generate Datadog friendly logs.
 
 ## Owners & contact
