@@ -4,13 +4,6 @@
 
 A lightweight logging library to generate Datadog friendly logs.
 
-## Owners & contact
-
-This project is owned by the [Phoenix](https://blacklane.atlassian.net/wiki/spaces/PHOEN/overview) team. You can get in touch with us via:
-
-- Slack: `#it-phoenix`
-- Email: `it-phoenix@blacklane.com`
-
 ## Setup instructions
 
 ### Requirements
