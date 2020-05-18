@@ -20,7 +20,7 @@ This project is owned by the [Phoenix](https://blacklane.atlassian.net/wiki/spac
 * Kiev-js doesn't have any other dependency.
 
 ```sh
-npm install blacklane/kiev-js#master
+npm install blacklane/kiev-js
 ```
 
 and then import the logger by adding te following line at the top of your file.
