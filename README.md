@@ -23,6 +23,12 @@ This project is owned by the [Phoenix](https://blacklane.atlassian.net/wiki/spac
 npm install blacklane/kiev-js#master
 ```
 
+and then import the logger by adding te following line at the top of your file.
+
+```js
+import logger from '@blacklane/kiev-js'
+```
+
 ### Tests & Linter
 
 * Run unit tests: `npm run test`
