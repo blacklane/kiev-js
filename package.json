@@ -53,7 +53,7 @@
     "ts-jest": "^25.2.1",
     "@types/faker": "^4.1.10"
   },
-  "description": "This project was bootstrapped with [TSDX](https://github.com/jaredpalmer/tsdx).",
+  "description": "A simple logging library to generate JSON formatted logging messages.",
   "dependencies": {},
   "repository": {
     "type": "git",
