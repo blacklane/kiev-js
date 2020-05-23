@@ -17,6 +17,7 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
+    "test:cov": "tsdx test --watch --coverage",
     "lint": "tsdx lint --fix src",
     "prepare": "tsdx build"
   },
