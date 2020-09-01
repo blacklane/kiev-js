@@ -4,6 +4,16 @@ enum LogLevel {
   ERROR = 'error',
 }
 
+interface Message {
+  timestamp: string
+  log_level: string
+  event: string
+  body: unknown
+  message: {
+    event: string
+  }
+}
+
 /**
  * Creates the message structure.
  *
@@ -18,8 +28,8 @@ function createMessage (
   event: string,
   messageEvent: string,
   logLevel: LogLevel
-): string {
-  return JSON.stringify({
+): string | Message {
+  const data: Message = {
     timestamp: new Date().toISOString(),
     log_level: logLevel,
     event: event,
@@ -27,7 +37,13 @@ function createMessage (
     message: {
       event: messageEvent
     }
-  })
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    return data
+  }
+
+  return JSON.stringify(data)
 }
 
 /**
