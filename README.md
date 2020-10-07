@@ -24,6 +24,10 @@ and then import the logger by adding te following line at the top of your file.
 import logger from '@blacklane/kiev-js'
 ```
 
+### Configuration
+
+The log will print a plain JSON object if the NODE_ENV environment variable is set to 'development'. **do not use development in production**
+
 ### Tests & Linter
 
 * Run unit tests: `npm run test`
