@@ -54,7 +54,9 @@
     "typescript": "^3.9.7"
   },
   "description": "A simple logging library to generate JSON formatted logging messages.",
-  "dependencies": {},
+  "dependencies": {
+    "loglevel": "^1.7.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/blacklane/kiev-js.git"

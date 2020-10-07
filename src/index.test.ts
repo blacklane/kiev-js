@@ -1,6 +1,6 @@
-import { Kiev } from '.'
+import { Kiev, Logger } from '.'
 
-let Logger: Kiev
+let kiev: Kiev
 let applicationName: string
 let environment: string
 
@@ -11,6 +11,8 @@ const logPayload = {
   }
 }
 let defaultLogAttributes: string[]
+
+let loggerInstance: Logger
 
 describe('kiev', () => {
   beforeAll(() => {
@@ -23,18 +25,36 @@ describe('kiev', () => {
       'message',
       'timestamp'
     ]
-    Logger = new Kiev(applicationName, environment)
+    kiev = new Kiev(applicationName, environment)
+    loggerInstance = kiev.getLogger()
   })
 
-  describe('logging different levels', () => {
-    it('outputs with DEBUG', () => {
+  describe('setLevel', () => {
+    it('changes the current log level', () => {
+      expect.assertions(2)
+
+      kiev.setLevel('warn')
+
+      expect(kiev.getLevel()).toStrictEqual('warn')
+
+      kiev.setLevel('error')
+
+      expect(kiev.getLevel()).toStrictEqual('error')
+    })
+  })
+
+  describe('debug', () => {
+    it('logs when current level is equal or greater than the function level', () => {
       expect.assertions(6)
 
-      const spy = jest.spyOn(console, 'debug')
-      Logger.debug('There were an event here, see the payload', logPayload)
+      kiev.setLevel('debug')
+
+      const spy = jest.spyOn(loggerInstance, 'debug')
+
+      kiev.debug('There were an event here, see the payload', logPayload)
       const message = JSON.parse(spy.mock.calls[0][0])
 
-      expect(console.debug).toHaveBeenCalledTimes(1)
+      expect(loggerInstance.debug).toHaveBeenCalledTimes(1)
       expect(Object.keys(message)).toStrictEqual(
         expect.arrayContaining(defaultLogAttributes)
       )
@@ -43,15 +63,20 @@ describe('kiev', () => {
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
     })
+  })
 
-    it('outputs with INFO', () => {
+  describe('info', () => {
+    it('logs with level INFO', () => {
       expect.assertions(6)
 
-      const spy = jest.spyOn(console, 'info')
-      Logger.info('There were an event here, see the payload', logPayload)
+      kiev.setLevel('info')
+
+      const spy = jest.spyOn(loggerInstance, 'info')
+
+      kiev.info('There were an event here, see the payload', logPayload)
       const message = JSON.parse(spy.mock.calls[0][0])
 
-      expect(console.info).toHaveBeenCalledTimes(1)
+      expect(loggerInstance.info).toHaveBeenCalledTimes(1)
       expect(Object.keys(message)).toStrictEqual(
         expect.arrayContaining(defaultLogAttributes)
       )
@@ -59,16 +84,24 @@ describe('kiev', () => {
       expect(message.level).toStrictEqual('INFO')
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
-    })
 
-    it('outputs with WARN', () => {
+      spy.mockRestore()
+    })
+  })
+
+  describe('warn', () => {
+    it('logs with level WARN', () => {
       expect.assertions(6)
 
-      const spy = jest.spyOn(console, 'warn')
-      Logger.warn('There were an event here, see the payload', logPayload)
+      kiev.setLevel('warn')
+
+      const spy = jest.spyOn(loggerInstance, 'warn')
+
+      kiev.warn('There were an event here, see the payload', logPayload)
+
       const message = JSON.parse(spy.mock.calls[0][0])
 
-      expect(console.warn).toHaveBeenCalledTimes(1)
+      expect(loggerInstance.warn).toHaveBeenCalledTimes(1)
       expect(Object.keys(message)).toStrictEqual(
         expect.arrayContaining(defaultLogAttributes)
       )
@@ -76,16 +109,24 @@ describe('kiev', () => {
       expect(message.level).toStrictEqual('WARN')
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
-    })
 
-    it('outputs with ERROR', () => {
+      spy.mockRestore()
+    })
+  })
+
+  describe('error', () => {
+    it('logs with level ERROR', () => {
       expect.assertions(6)
 
-      const spy = jest.spyOn(console, 'error')
-      Logger.error('There were an event here, see the payload', logPayload)
+      kiev.setLevel('error')
+
+      const spy = jest.spyOn(loggerInstance, 'error')
+
+      kiev.error('There were an event here, see the payload', logPayload)
+
       const message = JSON.parse(spy.mock.calls[0][0])
 
-      expect(console.error).toHaveBeenCalledTimes(1)
+      expect(loggerInstance.error).toHaveBeenCalledTimes(1)
       expect(Object.keys(message)).toStrictEqual(
         expect.arrayContaining(defaultLogAttributes)
       )
@@ -93,6 +134,33 @@ describe('kiev', () => {
       expect(message.level).toStrictEqual('ERROR')
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
+
+      spy.mockRestore()
+    })
+  })
+
+  describe('trace', () => {
+    it('logs with level TRACE', () => {
+      expect.assertions(6)
+
+      kiev.setLevel('trace')
+
+      const spy = jest.spyOn(loggerInstance, 'trace')
+
+      kiev.trace('There were an event here, see the payload', logPayload)
+
+      const message = JSON.parse(spy.mock.calls[0][0])
+
+      expect(loggerInstance.trace).toHaveBeenCalledTimes(1)
+      expect(Object.keys(message)).toStrictEqual(
+        expect.arrayContaining(defaultLogAttributes)
+      )
+      expect(message.application).toStrictEqual(applicationName)
+      expect(message.level).toStrictEqual('TRACE')
+      expect(message.environment).toStrictEqual(environment)
+      expect(message).toMatchObject(logPayload)
+
+      spy.mockRestore()
     })
   })
 })

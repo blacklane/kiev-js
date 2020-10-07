@@ -1,37 +1,60 @@
-enum LogLevel {
-  DEBUG = 'DEBUG',
-  INFO = 'INFO',
-  WARN = 'WARN',
-  ERROR = 'ERROR'
-}
+import * as logger from 'loglevel'
 
 interface LogMessage {
   application: string
   environment: string
-  level: LogLevel
+  level: string
   message: string
   timestamp: string
 }
 
+const LogLevels = {
+  0: 'trace',
+  1: 'debug',
+  2: 'info',
+  3: 'warn',
+  4: 'error',
+  5: 'silent'
+}
+
+/**
+ * Abstraction to avoid to expose internals of the logging library
+ */
+type Logger = logger.RootLogger
+
+/**
+ * Abstraction to avoid to expose internals of the logging library
+ */
+type LogLevel = logger.LogLevelDesc
+
 class Kiev {
   application: string
   environment: string
-  level: LogLevel
 
   constructor (application: string, environment: string) {
     this.application = application
     this.environment = environment
-    this.level = LogLevel.INFO
+  }
+
+  public getLogger (): Logger {
+    return logger
   }
 
   /**
-   * Generates an output log with severity level INFO.
+   * Changes the current logger level.
    *
-   * @param message  [String] is the name of log event(i.e. request_started, request_finished and etc).
-   * @param payload [Object] is a JSON object that represents the content of the event.
+   * @param level [LogLevel] the level
    */
-  info (message: string, payload: Object): void {
-    console.info(this._buildPayload(LogLevel.INFO, message, payload))
+  public setLevel (level: LogLevel): void {
+    logger.setLevel(level)
+  }
+
+  /**
+   * Returns the current logger level.
+   *
+   */
+  public getLevel () {
+    return LogLevels[logger.getLevel()]
   }
 
   /**
@@ -40,18 +63,18 @@ class Kiev {
    * @param message  [String] is the name of log event(i.e. request_started, request_finished and etc).
    * @param payload [Object] is a JSON object that represents the content of the event.
    */
-  debug (message: string, payload: Object): void {
-    console.debug(this._buildPayload(LogLevel.DEBUG, message, payload))
+  public debug (message: string, payload: Object): void {
+    logger.debug(this._buildPayload('DEBUG', message, payload))
   }
 
   /**
-   * Generates an output log with severity level ERROR.
+   * Generates an output log with severity level INFO.
    *
    * @param message  [String] is the name of log event(i.e. request_started, request_finished and etc).
    * @param payload [Object] is a JSON object that represents the content of the event.
    */
-  error (message: string, payload: Object): void {
-    console.error(this._buildPayload(LogLevel.ERROR, message, payload))
+  public info (message: string, payload: Object): void {
+    logger.info(this._buildPayload('INFO', message, payload))
   }
 
   /**
@@ -60,19 +83,39 @@ class Kiev {
    * @param message  [String] is the name of log event(i.e. request_started, request_finished and etc).
    * @param payload [Object] is a JSON object that represents the content of the event.
    */
-  warn (message: string, payload: Object): void {
-    console.warn(this._buildPayload(LogLevel.WARN, message, payload))
+  public warn (message: string, payload: Object): void {
+    logger.warn(this._buildPayload('WARN', message, payload))
+  }
+
+  /**
+   * Generates an output log with severity level ERROR.
+   *
+   * @param message  [String] is the name of log event(i.e. request_started, request_finished and etc).
+   * @param payload [Object] is a JSON object that represents the content of the event.
+   */
+  public error (message: string, payload: Object): void {
+    logger.error(this._buildPayload('ERROR', message, payload))
+  }
+
+  /**
+   * Generates an output log with severity level TRACE.
+   *
+   * @param message  [String] is the name of log event(i.e. request_started, request_finished and etc).
+   * @param payload [Object] is a JSON object that represents the content of the event.
+   */
+  public trace (message: string, payload: Object): void {
+    logger.trace(this._buildPayload('TRACE', message, payload))
   }
 
   /**
    * Creates the log structure.
    *
-   * @param severity [LogLevel] the log level.
-   * @param message  [String] is the description of log(i.e. "Lorem ipsum dolor sit amet").
+   * @param severity [string] the log level.
+   * @param message  [string] is the description of log(i.e. "Lorem ipsum dolor sit amet").
    * @param payload [Object] is a JSON object that represents the content of the event.
    */
   protected _buildPayload (
-    severity: LogLevel,
+    severity: string,
     message: string,
     payload: Object
   ): string {
@@ -88,4 +131,4 @@ class Kiev {
   }
 }
 
-export { Kiev }
+export { Kiev, Logger }
