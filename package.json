@@ -18,7 +18,7 @@
     "build": "tsdx build",
     "test": "tsdx test",
     "test:cov": "tsdx test --watch --coverage",
-    "lint": "tsdx lint --fix src",
+    "lint": "tsdx lint src --fix",
     "prepare": "tsdx build"
   },
   "peerDependencies": {},
