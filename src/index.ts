@@ -39,10 +39,6 @@ function createMessage (
     }
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    return data
-  }
-
   return JSON.stringify(data)
 }
 
