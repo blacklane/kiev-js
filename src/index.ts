@@ -7,36 +7,32 @@ enum LogLevel {
 interface Message {
   timestamp: string
   log_level: string
-  event: string
+  operation: string
   body: unknown
-  message: {
-    event: string
-  }
+  message: string
 }
 
 /**
  * Creates the message structure.
  *
- * @param message is a JSON object that represents the body of the event.
- * @param event  is the name of request event (request_started, request_finished and etc). The default is request_finished.
- * @param messageEvent is the name of the system event (BookingFound, BookingNotFound and etc). The default value is 'request'.
+ * @param body is a JSON object that represents the body.
+ * @param operation the log belongs to (request_started, request_finished, authentication and etc). The default is request_finished.
+ * @param message is the the core information of the log. By reading it anyone should understand what the log entry is about.
  * @param logLevel is the log level (info, warn, error).
  */
 // prettier-ignore
 function createMessage (
-  message: unknown,
-  event: string,
-  messageEvent: string,
+  body: unknown,
+  operation: string,
+  message: string,
   logLevel: LogLevel
 ): string | Message {
   const data: Message = {
     timestamp: new Date().toISOString(),
     log_level: logLevel,
-    event: event,
-    body: message,
-    message: {
-      event: messageEvent
-    }
+    operation: operation,
+    body: body,
+    message: message
   }
 
   return JSON.stringify(data)
@@ -45,37 +41,37 @@ function createMessage (
 /**
  * Logs an info log.
  *
- * @param message is a JSON object that represents the body of the event.
- * @param event  is the name of request event (request_started, request_finished and etc)
- * @param messageEvent is the name of the system event (BookingFound, BookingNotFound and etc). The default value is 'request'.
+ * @param body is a JSON object that represents the body.
+ * @param operation the log belongs to (request_started, request_finished, authentication and etc). The default is request_finished.
+ * @param message is the the core information of the log. By reading it anyone should understand what the log entry is about.
  */
 // prettier-ignore
-function info (message: unknown, event: string, messageEvent: string): void {
-  console.info(createMessage(message, event, messageEvent, LogLevel.INFO))
+function info (body: unknown, operation: string, message: string): void {
+  console.info(createMessage(body, operation, message, LogLevel.INFO))
 }
 
 /**
  * Logs a warn log.
  *
- * @param message is a JSON object that represents the body of the event.
- * @param event  is the name of request event (request_started, request_finished and etc)
- * @param messageEvent is the name of the system event (BookingFound, BookingNotFound and etc). The default value is 'request'.
+ * @param body is a JSON object that represents the body.
+ * @param operation the log belongs to (request_started, request_finished, authentication and etc). The default is request_finished.
+ * @param message is the the core information of the log. By reading it anyone should understand what the log entry is about.
  */
 // prettier-ignore
-function warn (message: unknown, event: string, messageEvent: string): void {
-  console.warn(createMessage(message, event, messageEvent, LogLevel.WARN))
+function warn (body: unknown, operation: string, message: string): void {
+  console.warn(createMessage(body, operation, message, LogLevel.WARN))
 }
 
 /**
  * Logs an error log.
  *
- * @param message is a JSON object that represents the body of the event.
- * @param event  is the name of request event (request_started, request_finished and etc)
- * @param messageEvent is the name of the system event (BookingFound, BookingNotFound and etc). The default value is 'request'.
+ * @param body is a JSON object that represents the body.
+ * @param operation the log belongs to (request_started, request_finished, authentication and etc). The default is request_finished.
+ * @param message is the the core information of the log. By reading it anyone should understand what the log entry is about.
  */
 // prettier-ignore
-function error (message: unknown, event: string, messageEvent: string): void {
-  console.error(createMessage(message, event, messageEvent, LogLevel.ERROR))
+function error (body: unknown, operation: string, message: string): void {
+  console.error(createMessage(body, operation, message, LogLevel.ERROR))
 }
 
 export default { info, warn, error }
