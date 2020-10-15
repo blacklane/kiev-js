@@ -49,8 +49,8 @@
     "husky": "^4.3.0",
     "jest": "^25.1.0",
     "ts-jest": "^25.2.1",
-    "tsdx": "^0.14.0",
-    "tslib": "^1.14.0",
+    "tsdx": "^0.14.1",
+    "tslib": "^1.14.1",
     "typescript": "^3.9.7"
   },
   "description": "A simple logging library to generate JSON formatted logging messages.",
