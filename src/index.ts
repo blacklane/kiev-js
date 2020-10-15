@@ -8,24 +8,19 @@ interface LogMessage {
   timestamp: string
 }
 
-const LogLevels = {
-  0: 'trace',
-  1: 'debug',
-  2: 'info',
-  3: 'warn',
-  4: 'error',
-  5: 'silent'
+enum LogLevel {
+  TRACE = 'TRACE',
+  DEBUG = 'DEBUG',
+  INFO = 'INFO',
+  WARN = 'WARN',
+  ERROR = 'ERROR',
+  SILENT = 'SILENT'
 }
 
 /**
  * Abstraction to avoid to expose internals of the logging library
  */
 type Logger = logger.RootLogger
-
-/**
- * Abstraction to avoid to expose internals of the logging library
- */
-type LogLevel = logger.LogLevelDesc
 
 class Kiev {
   application: string
@@ -54,7 +49,15 @@ class Kiev {
    *
    */
   public getLevel () {
-    return LogLevels[logger.getLevel()]
+    let level: LogLevel | null = null
+
+    for (const [name, number] of Object.entries(logger.levels)) {
+      if (logger.getLevel() === number) {
+        level = name as LogLevel
+        break
+      }
+    }
+    return level
   }
 
   /**
@@ -64,7 +67,7 @@ class Kiev {
    * @param payload [Object] is a JSON object that represents the content of the event.
    */
   public debug (message: string, payload: Object): void {
-    logger.debug(this._buildPayload('DEBUG', message, payload))
+    logger.debug(this._buildPayload(LogLevel.DEBUG, message, payload))
   }
 
   /**
@@ -74,7 +77,7 @@ class Kiev {
    * @param payload [Object] is a JSON object that represents the content of the event.
    */
   public info (message: string, payload: Object): void {
-    logger.info(this._buildPayload('INFO', message, payload))
+    logger.info(this._buildPayload(LogLevel.INFO, message, payload))
   }
 
   /**
@@ -84,7 +87,7 @@ class Kiev {
    * @param payload [Object] is a JSON object that represents the content of the event.
    */
   public warn (message: string, payload: Object): void {
-    logger.warn(this._buildPayload('WARN', message, payload))
+    logger.warn(this._buildPayload(LogLevel.WARN, message, payload))
   }
 
   /**
@@ -94,7 +97,7 @@ class Kiev {
    * @param payload [Object] is a JSON object that represents the content of the event.
    */
   public error (message: string, payload: Object): void {
-    logger.error(this._buildPayload('ERROR', message, payload))
+    logger.error(this._buildPayload(LogLevel.ERROR, message, payload))
   }
 
   /**
@@ -104,7 +107,7 @@ class Kiev {
    * @param payload [Object] is a JSON object that represents the content of the event.
    */
   public trace (message: string, payload: Object): void {
-    logger.trace(this._buildPayload('TRACE', message, payload))
+    logger.trace(this._buildPayload(LogLevel.TRACE, message, payload))
   }
 
   /**
@@ -131,4 +134,4 @@ class Kiev {
   }
 }
 
-export { Kiev, Logger }
+export { Kiev, Logger, LogLevel }

@@ -1,4 +1,4 @@
-import { Kiev, Logger } from '.'
+import { Kiev, Logger, LogLevel } from '.'
 
 let kiev: Kiev
 let applicationName: string
@@ -33,13 +33,13 @@ describe('kiev', () => {
     it('changes the current log level', () => {
       expect.assertions(2)
 
-      kiev.setLevel('warn')
+      kiev.setLevel(LogLevel.WARN)
 
-      expect(kiev.getLevel()).toStrictEqual('warn')
+      expect(kiev.getLevel()).toStrictEqual(LogLevel.WARN)
 
-      kiev.setLevel('error')
+      kiev.setLevel(LogLevel.ERROR)
 
-      expect(kiev.getLevel()).toStrictEqual('error')
+      expect(kiev.getLevel()).toStrictEqual(LogLevel.ERROR)
     })
   })
 
@@ -47,7 +47,7 @@ describe('kiev', () => {
     it('logs when current level is equal or greater than the function level', () => {
       expect.assertions(6)
 
-      kiev.setLevel('debug')
+      kiev.setLevel(LogLevel.DEBUG)
 
       const spy = jest.spyOn(loggerInstance, 'debug')
 
@@ -59,7 +59,7 @@ describe('kiev', () => {
         expect.arrayContaining(defaultLogAttributes)
       )
       expect(message.application).toStrictEqual(applicationName)
-      expect(message.level).toStrictEqual('DEBUG')
+      expect(message.level).toStrictEqual(LogLevel.DEBUG)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
     })
@@ -69,7 +69,7 @@ describe('kiev', () => {
     it('logs with level INFO', () => {
       expect.assertions(6)
 
-      kiev.setLevel('info')
+      kiev.setLevel(LogLevel.INFO)
 
       const spy = jest.spyOn(loggerInstance, 'info')
 
@@ -81,7 +81,7 @@ describe('kiev', () => {
         expect.arrayContaining(defaultLogAttributes)
       )
       expect(message.application).toStrictEqual(applicationName)
-      expect(message.level).toStrictEqual('INFO')
+      expect(message.level).toStrictEqual(LogLevel.INFO)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
 
@@ -93,7 +93,7 @@ describe('kiev', () => {
     it('logs with level WARN', () => {
       expect.assertions(6)
 
-      kiev.setLevel('warn')
+      kiev.setLevel(LogLevel.WARN)
 
       const spy = jest.spyOn(loggerInstance, 'warn')
 
@@ -106,7 +106,7 @@ describe('kiev', () => {
         expect.arrayContaining(defaultLogAttributes)
       )
       expect(message.application).toStrictEqual(applicationName)
-      expect(message.level).toStrictEqual('WARN')
+      expect(message.level).toStrictEqual(LogLevel.WARN)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
 
@@ -118,7 +118,7 @@ describe('kiev', () => {
     it('logs with level ERROR', () => {
       expect.assertions(6)
 
-      kiev.setLevel('error')
+      kiev.setLevel(LogLevel.ERROR)
 
       const spy = jest.spyOn(loggerInstance, 'error')
 
@@ -131,7 +131,7 @@ describe('kiev', () => {
         expect.arrayContaining(defaultLogAttributes)
       )
       expect(message.application).toStrictEqual(applicationName)
-      expect(message.level).toStrictEqual('ERROR')
+      expect(message.level).toStrictEqual(LogLevel.ERROR)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
 
@@ -143,7 +143,7 @@ describe('kiev', () => {
     it('logs with level TRACE', () => {
       expect.assertions(6)
 
-      kiev.setLevel('trace')
+      kiev.setLevel(LogLevel.TRACE)
 
       const spy = jest.spyOn(loggerInstance, 'trace')
 
@@ -156,7 +156,7 @@ describe('kiev', () => {
         expect.arrayContaining(defaultLogAttributes)
       )
       expect(message.application).toStrictEqual(applicationName)
-      expect(message.level).toStrictEqual('TRACE')
+      expect(message.level).toStrictEqual(LogLevel.TRACE)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
 
