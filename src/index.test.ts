@@ -35,16 +35,10 @@ describe('logger', () => {
 
   describe('setLevel', () => {
     it('changes the current log level', () => {
-      expect.assertions(3)
-
-      logger.setLevel(LogLevel.WARN)
-
-      expect(mockLogLevel.setLevel).toHaveBeenCalledWith(LogLevel.WARN)
+      expect.assertions(1)
 
       logger.setLevel(LogLevel.ERROR)
-
       expect(mockLogLevel.setLevel).toHaveBeenCalledWith(LogLevel.ERROR)
-      expect(mockLogLevel.setLevel).toHaveBeenCalledTimes(2)
     })
   })
 
@@ -54,7 +48,7 @@ describe('logger', () => {
       mockLogLevel.debug.mockClear()
     })
 
-    it('logs when current level is equal or greater than the function level', () => {
+    it('logs when current level is equal or greater than the DEBUG level', () => {
       expect.assertions(6)
 
       logger.debug('There was an event here, see the payload', logPayload)
@@ -77,7 +71,7 @@ describe('logger', () => {
       mockLogLevel.info.mockClear()
     })
 
-    it('logs with level INFO', () => {
+    it('logs when current level is equal or greater than the INFO level', () => {
       expect.assertions(6)
 
       logger.info('There were an event here, see the payload', logPayload)
@@ -100,7 +94,7 @@ describe('logger', () => {
       mockLogLevel.warn.mockClear()
     })
 
-    it('logs with level WARN', () => {
+    it('logs when current level is equal or greater than the WARN level', () => {
       expect.assertions(6)
 
       logger.warn('There were an event here, see the payload', logPayload)
@@ -124,7 +118,7 @@ describe('logger', () => {
       mockLogLevel.error.mockClear()
     })
 
-    it('logs with level ERROR', () => {
+    it('logs when current level is equal or greater than the ERROR level', () => {
       expect.assertions(6)
 
       logger.setLevel(LogLevel.ERROR)
@@ -150,7 +144,7 @@ describe('logger', () => {
       mockLogLevel.trace.mockClear()
     })
 
-    it('logs with level TRACE', () => {
+    it('logs when current level is equal the TRACE level', () => {
       expect.assertions(6)
 
       logger.trace('There were an event here, see the payload', logPayload)
