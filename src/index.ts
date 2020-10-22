@@ -17,11 +17,6 @@ enum LogLevel {
   SILENT = 'SILENT'
 }
 
-/**
- * Abstraction to avoid to expose internals of the logging library
- */
-type Logger = logger.RootLogger
-
 class Kiev {
   application: string
   environment: string
@@ -29,10 +24,6 @@ class Kiev {
   constructor (application: string, environment: string) {
     this.application = application
     this.environment = environment
-  }
-
-  public getLogger (): Logger {
-    return logger
   }
 
   /**
@@ -134,4 +125,4 @@ class Kiev {
   }
 }
 
-export { Kiev, Logger, LogLevel }
+export { Kiev, LogLevel }
