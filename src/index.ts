@@ -54,7 +54,7 @@ class Logger {
   /**
    * Generates an output log with severity level DEBUG.
    *
-   * @param {String} message is the name of log event(i.e. request_started, request_finished and etc).
+   * @param {String} message is the core information detail of your log entry. By reading it anyone should understand what the log entry is about.
    * @param {object} payload is a JSON object that represents the content of the event.
    */
   public debug (message: string, payload: Object): void {
@@ -64,7 +64,7 @@ class Logger {
   /**
    * Generates an output log with severity level INFO.
    *
-   * @param {String} message  is the name of log event(i.e. request_started, request_finished and etc).
+   * @param {String} message is the core information detail of your log entry. By reading it anyone should understand what the log entry is about.
    * @param {object} payload is a JSON object that represents the content of the event.
    */
   public info (message: string, payload: Object): void {
@@ -74,7 +74,7 @@ class Logger {
   /**
    * Generates an output log with severity level WARN.
    *
-   * @param {String} message  is the name of log event(i.e. request_started, request_finished and etc).
+   * @param {String} message is the core information detail of your log entry. By reading it anyone should understand what the log entry is about.
    * @param {object} payload is a JSON object that represents the content of the event.
    */
   public warn (message: string, payload: Object): void {
@@ -84,7 +84,7 @@ class Logger {
   /**
    * Generates an output log with severity level ERROR.
    *
-   * @param {String} message  is the name of log event(i.e. request_started, request_finished and etc).
+   * @param {String} message is the core information detail of your log entry. By reading it anyone should understand what the log entry is about.
    * @param {object} payload is a JSON object that represents the content of the event.
    */
   public error (message: string, payload: Object): void {
@@ -94,7 +94,7 @@ class Logger {
   /**
    * Generates an output log with severity level TRACE.
    *
-   * @param {String} message  is the name of log event(i.e. request_started, request_finished and etc).
+   * @param {String} message is the core information detail of your log entry. By reading it anyone should understand what the log entry is about.
    * @param {object} payload is a JSON object that represents the content of the event.
    */
   public trace (message: string, payload: Object): void {
@@ -102,7 +102,7 @@ class Logger {
   }
 
   /**
-   * Creates the log structure.
+   * Creates the log payload.
    *
    * @param {String} severity the log level.
    * @param {String} message  is the description of log(i.e. "Lorem ipsum dolor sit amet").
