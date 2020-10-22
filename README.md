@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/blacklane/kiev-js.svg?branch=master)](https://travis-ci.com/blacklane/kiev-js)
 
-Kiev-js is a lightweight logging library focused on Blacklane Javascript/Typescript logging standards.
+Kiev-js is a wrapper logging library around [LogLevel](https://github.com/pimterry/loglevel) implementing Blacklane logging standards.
 
 ## Setup instructions
 
@@ -74,4 +74,3 @@ logger.debug('FooBar', { fizz: 'buzz' }) // Now it will be logged
 * Run unit tests: `npm run test`
 * Run tests watch & coverage: `npm run test:cov`
 * Run Linter: `npm run lint`
-
