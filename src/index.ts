@@ -17,7 +17,7 @@ enum LogLevel {
   SILENT = 'SILENT'
 }
 
-class Kiev {
+class Logger {
   application: string
   environment: string
 
@@ -125,4 +125,4 @@ class Kiev {
   }
 }
 
-export { Kiev, LogLevel }
+export { Logger, LogLevel }
