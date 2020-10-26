@@ -19,12 +19,12 @@ npm install @blacklane/kiev-js
 and then import the logger and use it as the example below.
 
 ```javascript
-import { Kiev, LogLevel } from '@blacklane/kiev-js'
+import { Logger, LogLevel } from '@blacklane/kiev-js'
 
 const environment = process.env.NODE_ENV || 'development'
 
 // Default level is 'warn'
-logger = new Kiev('application-name', environment)
+logger = new Logger('application-name', environment)
 
 // This won't be logged due to the default level
 logger.debug('Something happening here', { foo: 'bar' })
