@@ -17,7 +17,8 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
-    "lint": "tsdx lint --fix src",
+    "test:cov": "tsdx test --watch --coverage",
+    "lint": "tsdx lint src --fix",
     "prepare": "tsdx build"
   },
   "peerDependencies": {},
@@ -30,7 +31,7 @@
     "printWidth": 80,
     "semi": false,
     "singleQuote": true,
-    "trailingComma": "es5"
+    "trailingComma": "none"
   },
   "name": "@blacklane/kiev-js",
   "author": "Blacklane",
@@ -48,12 +49,14 @@
     "husky": "^4.3.0",
     "jest": "^25.1.0",
     "ts-jest": "^25.2.1",
-    "tsdx": "^0.14.0",
-    "tslib": "^1.14.0",
+    "tsdx": "^0.14.1",
+    "tslib": "^1.14.1",
     "typescript": "^3.9.7"
   },
   "description": "A simple logging library to generate JSON formatted logging messages.",
-  "dependencies": {},
+  "dependencies": {
+    "loglevel": "^1.7.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/blacklane/kiev-js.git"

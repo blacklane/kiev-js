@@ -1,57 +1,164 @@
-import logger from '.'
+import * as logLevel from 'loglevel'
+import { Logger, LogLevel } from '.'
+
+jest.mock('loglevel')
+const mockLogLevel = logLevel as jest.Mocked<typeof logLevel>
+
+let logger: Logger
+let applicationName: string
+let environment: string
+
+const logPayload = {
+  user: {
+    first_name: 'John',
+    last_name: 'Doe'
+  }
+}
+let defaultLogAttributes: string[]
 
 describe('logger', () => {
+  beforeAll(() => {
+    applicationName = 'application-name'
+    environment = 'development'
+    defaultLogAttributes = [
+      'application',
+      'environment',
+      'level',
+      'message',
+      'timestamp'
+    ]
+  })
+
+  beforeEach(() => {
+    logger = new Logger(applicationName, environment)
+  })
+
+  describe('setLevel', () => {
+    it('changes the current log level', () => {
+      expect.assertions(1)
+
+      logger.setLevel(LogLevel.ERROR)
+      expect(mockLogLevel.setLevel).toHaveBeenCalledWith(LogLevel.ERROR)
+    })
+  })
+
+  describe('debug', () => {
+    beforeEach(() => {
+      logger.setLevel(LogLevel.DEBUG)
+      mockLogLevel.debug.mockClear()
+    })
+
+    it('logs when current level is equal or greater than the DEBUG level', () => {
+      expect.assertions(6)
+
+      logger.debug('There was an event here, see the payload', logPayload)
+      const message = JSON.parse(mockLogLevel.debug.mock.calls[0][0])
+
+      expect(mockLogLevel.debug).toHaveBeenCalledTimes(1)
+      expect(Object.keys(message)).toStrictEqual(
+        expect.arrayContaining(defaultLogAttributes)
+      )
+      expect(message.application).toStrictEqual(applicationName)
+      expect(message.level).toStrictEqual(LogLevel.DEBUG)
+      expect(message.environment).toStrictEqual(environment)
+      expect(message).toMatchObject(logPayload)
+    })
+  })
+
   describe('info', () => {
-    it('generates a log with level info', () => {
-      expect.assertions(2)
-
-      const spy = jest.spyOn(console, 'info')
-      logger.info({ message: 'Nada' }, 'test', 'it')
-      const message = JSON.parse(spy.mock.calls[0][0])
-
-      expect(console.info).toHaveBeenCalledTimes(1)
-      expect(message.log_level).toStrictEqual('info')
-
-      spy.mockRestore()
+    beforeEach(() => {
+      logger.setLevel(LogLevel.INFO)
+      mockLogLevel.info.mockClear()
     })
 
-    it('generates a log with the body as the JSON passed', () => {
-      expect.assertions(2)
+    it('logs when current level is equal or greater than the INFO level', () => {
+      expect.assertions(6)
 
-      const spy = jest.spyOn(console, 'info')
-      logger.info({ message: 'Nada' }, 'test', 'it')
-      const message = JSON.parse(spy.mock.calls[0][0])
+      logger.info('There were an event here, see the payload', logPayload)
+      const message = JSON.parse(mockLogLevel.info.mock.calls[0][0])
 
-      expect(console.info).toHaveBeenCalledTimes(1)
-      expect(message.body).toStrictEqual({ message: 'Nada' })
+      expect(mockLogLevel.info).toHaveBeenCalledTimes(1)
+      expect(Object.keys(message)).toStrictEqual(
+        expect.arrayContaining(defaultLogAttributes)
+      )
+      expect(message.application).toStrictEqual(applicationName)
+      expect(message.level).toStrictEqual(LogLevel.INFO)
+      expect(message.environment).toStrictEqual(environment)
+      expect(message).toMatchObject(logPayload)
+    })
+  })
 
-      spy.mockRestore()
+  describe('warn', () => {
+    beforeEach(() => {
+      logger.setLevel(LogLevel.WARN)
+      mockLogLevel.warn.mockClear()
     })
 
-    it('generates a log with level warn', () => {
-      expect.assertions(2)
+    it('logs when current level is equal or greater than the WARN level', () => {
+      expect.assertions(6)
 
-      const spy = jest.spyOn(console, 'warn')
-      logger.warn({ message: 'Nada' }, 'test', 'it')
-      const message = JSON.parse(spy.mock.calls[0][0])
+      logger.warn('There were an event here, see the payload', logPayload)
 
-      expect(console.warn).toHaveBeenCalledTimes(1)
-      expect(message.log_level).toStrictEqual('warn')
+      const message = JSON.parse(mockLogLevel.warn.mock.calls[0][0])
 
-      spy.mockRestore()
+      expect(mockLogLevel.warn).toHaveBeenCalledTimes(1)
+      expect(Object.keys(message)).toStrictEqual(
+        expect.arrayContaining(defaultLogAttributes)
+      )
+      expect(message.application).toStrictEqual(applicationName)
+      expect(message.level).toStrictEqual(LogLevel.WARN)
+      expect(message.environment).toStrictEqual(environment)
+      expect(message).toMatchObject(logPayload)
+    })
+  })
+
+  describe('error', () => {
+    beforeEach(() => {
+      logger.setLevel(LogLevel.ERROR)
+      mockLogLevel.error.mockClear()
     })
 
-    it('generates a log with level error', () => {
-      expect.assertions(2)
+    it('logs when current level is equal or greater than the ERROR level', () => {
+      expect.assertions(6)
 
-      const spy = jest.spyOn(console, 'error')
-      logger.error({ message: 'Nada' }, 'test', 'it')
-      const message = JSON.parse(spy.mock.calls[0][0])
+      logger.setLevel(LogLevel.ERROR)
 
-      expect(console.error).toHaveBeenCalledTimes(1)
-      expect(message.log_level).toStrictEqual('error')
+      logger.error('There were an event here, see the payload', logPayload)
 
-      spy.mockRestore()
+      const message = JSON.parse(mockLogLevel.error.mock.calls[0][0])
+
+      expect(mockLogLevel.error).toHaveBeenCalledTimes(1)
+      expect(Object.keys(message)).toStrictEqual(
+        expect.arrayContaining(defaultLogAttributes)
+      )
+      expect(message.application).toStrictEqual(applicationName)
+      expect(message.level).toStrictEqual(LogLevel.ERROR)
+      expect(message.environment).toStrictEqual(environment)
+      expect(message).toMatchObject(logPayload)
+    })
+  })
+
+  describe('trace', () => {
+    beforeEach(() => {
+      logger.setLevel(LogLevel.TRACE)
+      mockLogLevel.trace.mockClear()
+    })
+
+    it('logs when current level is equal the TRACE level', () => {
+      expect.assertions(6)
+
+      logger.trace('There were an event here, see the payload', logPayload)
+
+      const message = JSON.parse(mockLogLevel.trace.mock.calls[0][0])
+
+      expect(mockLogLevel.trace).toHaveBeenCalledTimes(1)
+      expect(Object.keys(message)).toStrictEqual(
+        expect.arrayContaining(defaultLogAttributes)
+      )
+      expect(message.application).toStrictEqual(applicationName)
+      expect(message.level).toStrictEqual(LogLevel.TRACE)
+      expect(message.environment).toStrictEqual(environment)
+      expect(message).toMatchObject(logPayload)
     })
   })
 })
