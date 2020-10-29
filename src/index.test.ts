@@ -65,6 +65,15 @@ describe('logger', () => {
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
     })
+
+    it('logs only the message without extra params', () => {
+      expect.hasAssertions()
+
+      logger.debug(logMessage)
+      const loggedData = JSON.parse(mockLogLevel.debug.mock.calls[0][0])
+
+      expect(loggedData.message).toStrictEqual(logMessage)
+    })
   })
 
   describe('info', () => {
@@ -87,6 +96,15 @@ describe('logger', () => {
       expect(message.level).toStrictEqual(LogLevel.INFO)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
+    })
+
+    it('logs only the message without extra params', () => {
+      expect.hasAssertions()
+
+      logger.info(logMessage)
+      const loggedData = JSON.parse(mockLogLevel.info.mock.calls[0][0])
+
+      expect(loggedData.message).toStrictEqual(logMessage)
     })
   })
 
@@ -111,6 +129,15 @@ describe('logger', () => {
       expect(message.level).toStrictEqual(LogLevel.WARN)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
+    })
+
+    it('logs only the message without extra params', () => {
+      expect.hasAssertions()
+
+      logger.warn(logMessage)
+      const loggedData = JSON.parse(mockLogLevel.warn.mock.calls[0][0])
+
+      expect(loggedData.message).toStrictEqual(logMessage)
     })
   })
 
@@ -138,6 +165,15 @@ describe('logger', () => {
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
     })
+
+    it('logs only the message without extra params', () => {
+      expect.hasAssertions()
+
+      logger.error(logMessage)
+      const loggedData = JSON.parse(mockLogLevel.error.mock.calls[0][0])
+
+      expect(loggedData.message).toStrictEqual(logMessage)
+    })
   })
 
   describe('trace', () => {
@@ -161,6 +197,15 @@ describe('logger', () => {
       expect(message.level).toStrictEqual(LogLevel.TRACE)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
+    })
+
+    it('logs only the message without extra params', () => {
+      expect.hasAssertions()
+
+      logger.trace(logMessage)
+      const loggedData = JSON.parse(mockLogLevel.trace.mock.calls[0][0])
+
+      expect(loggedData.message).toStrictEqual(logMessage)
     })
   })
 })
