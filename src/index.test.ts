@@ -7,6 +7,7 @@ const mockLogLevel = logLevel as jest.Mocked<typeof logLevel>
 let logger: Logger
 let applicationName: string
 let environment: string
+let logMessage: string
 
 const logPayload = {
   user: {
@@ -27,6 +28,7 @@ describe('logger', () => {
       'message',
       'timestamp'
     ]
+    logMessage = 'There was an event here, see the payload'
   })
 
   beforeEach(() => {
@@ -51,7 +53,7 @@ describe('logger', () => {
     it('logs when current level is equal or greater than the DEBUG level', () => {
       expect.assertions(6)
 
-      logger.debug('There was an event here, see the payload', logPayload)
+      logger.debug(logMessage, logPayload)
       const message = JSON.parse(mockLogLevel.debug.mock.calls[0][0])
 
       expect(mockLogLevel.debug).toHaveBeenCalledTimes(1)
@@ -62,6 +64,15 @@ describe('logger', () => {
       expect(message.level).toStrictEqual(LogLevel.DEBUG)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
+    })
+
+    it('logs only the message without extra params', () => {
+      expect.hasAssertions()
+
+      logger.debug(logMessage)
+      const loggedData = JSON.parse(mockLogLevel.debug.mock.calls[0][0])
+
+      expect(loggedData.message).toStrictEqual(logMessage)
     })
   })
 
@@ -74,7 +85,7 @@ describe('logger', () => {
     it('logs when current level is equal or greater than the INFO level', () => {
       expect.assertions(6)
 
-      logger.info('There were an event here, see the payload', logPayload)
+      logger.info(logMessage, logPayload)
       const message = JSON.parse(mockLogLevel.info.mock.calls[0][0])
 
       expect(mockLogLevel.info).toHaveBeenCalledTimes(1)
@@ -85,6 +96,15 @@ describe('logger', () => {
       expect(message.level).toStrictEqual(LogLevel.INFO)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
+    })
+
+    it('logs only the message without extra params', () => {
+      expect.hasAssertions()
+
+      logger.info(logMessage)
+      const loggedData = JSON.parse(mockLogLevel.info.mock.calls[0][0])
+
+      expect(loggedData.message).toStrictEqual(logMessage)
     })
   })
 
@@ -97,7 +117,7 @@ describe('logger', () => {
     it('logs when current level is equal or greater than the WARN level', () => {
       expect.assertions(6)
 
-      logger.warn('There were an event here, see the payload', logPayload)
+      logger.warn(logMessage, logPayload)
 
       const message = JSON.parse(mockLogLevel.warn.mock.calls[0][0])
 
@@ -109,6 +129,15 @@ describe('logger', () => {
       expect(message.level).toStrictEqual(LogLevel.WARN)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
+    })
+
+    it('logs only the message without extra params', () => {
+      expect.hasAssertions()
+
+      logger.warn(logMessage)
+      const loggedData = JSON.parse(mockLogLevel.warn.mock.calls[0][0])
+
+      expect(loggedData.message).toStrictEqual(logMessage)
     })
   })
 
@@ -123,7 +152,7 @@ describe('logger', () => {
 
       logger.setLevel(LogLevel.ERROR)
 
-      logger.error('There were an event here, see the payload', logPayload)
+      logger.error(logMessage, logPayload)
 
       const message = JSON.parse(mockLogLevel.error.mock.calls[0][0])
 
@@ -136,6 +165,15 @@ describe('logger', () => {
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
     })
+
+    it('logs only the message without extra params', () => {
+      expect.hasAssertions()
+
+      logger.error(logMessage)
+      const loggedData = JSON.parse(mockLogLevel.error.mock.calls[0][0])
+
+      expect(loggedData.message).toStrictEqual(logMessage)
+    })
   })
 
   describe('trace', () => {
@@ -147,7 +185,7 @@ describe('logger', () => {
     it('logs when current level is equal the TRACE level', () => {
       expect.assertions(6)
 
-      logger.trace('There were an event here, see the payload', logPayload)
+      logger.trace(logMessage, logPayload)
 
       const message = JSON.parse(mockLogLevel.trace.mock.calls[0][0])
 
@@ -159,6 +197,15 @@ describe('logger', () => {
       expect(message.level).toStrictEqual(LogLevel.TRACE)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
+    })
+
+    it('logs only the message without extra params', () => {
+      expect.hasAssertions()
+
+      logger.trace(logMessage)
+      const loggedData = JSON.parse(mockLogLevel.trace.mock.calls[0][0])
+
+      expect(loggedData.message).toStrictEqual(logMessage)
     })
   })
 })
