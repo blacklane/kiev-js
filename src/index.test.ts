@@ -44,6 +44,89 @@ describe('logger', () => {
     })
   })
 
+  describe('constructor with fields', () => {
+    beforeEach(() => {
+      mockLogLevel.info.mockClear()
+    })
+
+    it('passing fields to the constructor', () => {
+      expect.assertions(4)
+
+      const trackingId = 'passing fields to the constructor'
+      const log = new Logger(applicationName, environment, {
+        tracking_id: trackingId
+      })
+
+      log.info(logMessage, logPayload)
+
+      const message = JSON.parse(mockLogLevel.info.mock.calls[0][0])
+
+      expect(message.application).toStrictEqual(applicationName)
+      expect(message.environment).toStrictEqual(environment)
+      expect(message.tracking_id).toStrictEqual(trackingId)
+      expect(message).toMatchObject(logPayload)
+    })
+
+    it('setFields', () => {
+      expect.assertions(1)
+
+      const foo = 'foo'
+      const bar = 'bar'
+      const log = new Logger(applicationName, environment, { foo })
+
+      log.setFields({ foo: bar })
+      log.info(logMessage)
+      const message = JSON.parse(mockLogLevel.info.mock.calls[0][0])
+
+      expect(message.foo).toStrictEqual(bar)
+    })
+
+    it('payload overwrites fields for a single log', () => {
+      expect.assertions(2)
+
+      const trackingIdOld = 'old'
+      const trackingId = 'new tracking id'
+      const log = new Logger(applicationName, environment, {
+        tracking_id: trackingIdOld
+      })
+
+      log.info(logMessage, { tracking_id: trackingId })
+      const message1 = JSON.parse(mockLogLevel.info.mock.calls[0][0])
+
+      log.info(logMessage)
+      const message2 = JSON.parse(mockLogLevel.info.mock.calls[1][0])
+
+      expect(message1.tracking_id).toStrictEqual(trackingId)
+      expect(message2.tracking_id).toStrictEqual(trackingIdOld)
+    })
+  })
+
+  describe('extend', () => {
+    beforeEach(() => {
+      mockLogLevel.info.mockClear()
+    })
+
+    it('extend', () => {
+      expect.assertions(2)
+
+      const trackingId = 'tracking id'
+
+      const parent = new Logger(applicationName, environment, {
+        tracking_id: trackingId
+      })
+      const extended = parent.extend({ extend: 'extend' })
+
+      parent.info(logMessage)
+      const message1 = JSON.parse(mockLogLevel.info.mock.calls[0][0])
+
+      extended.info(logMessage)
+      const message2 = JSON.parse(mockLogLevel.info.mock.calls[1][0])
+
+      expect(message1.tracking_id).toStrictEqual(trackingId)
+      expect(message2.extend).toStrictEqual('extend')
+    })
+  })
+
   describe('debug', () => {
     beforeEach(() => {
       logger.setLevel(LogLevel.DEBUG)

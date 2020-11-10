@@ -20,10 +20,34 @@ enum LogLevel {
 class Logger {
   application: string
   environment: string
+  fields: Object
 
-  constructor (application: string, environment: string) {
+  constructor (application: string, environment: string, fields: Object = {}) {
     this.application = application
     this.environment = environment
+    this.fields = fields
+  }
+
+  /**
+   * Sets the fields to be logged on every log in addition to the payload
+   * passed to any of the log methods. If any key was already set, it'll be
+   * overridden.
+   * @param {Object} fields to be added to all log entries.
+   */
+  public setFields (fields: Object) {
+    this.fields = { ...this.fields, ...fields }
+  }
+
+  /**
+   * Returns a new logger which fields is the union of this logger fields and
+   * the fields parameter.
+   * @param {Object} fields to be added to all log entries.
+   */
+  public extend (fields: Object): Logger {
+    return new Logger(this.application, this.environment, {
+      ...this.fields,
+      ...fields
+    })
   }
 
   /**
@@ -37,7 +61,6 @@ class Logger {
 
   /**
    * Returns the current logger level.
-   *
    */
   public getLevel () {
     let level: LogLevel | null = null
@@ -54,7 +77,8 @@ class Logger {
   /**
    * Generates an output log with severity level DEBUG.
    *
-   * @param {String} message is the core information detail of your log entry. By reading it anyone should understand what the log entry is about.
+   * @param {String} message is the core information detail of your log entry.
+   * By reading it anyone should understand what the log entry is about.
    * @param {object} [payload] is a JSON object, usually a request or event payload.
    */
   public debug (message: string, payload: Object = {}): void {
@@ -64,7 +88,8 @@ class Logger {
   /**
    * Generates an output log with severity level INFO.
    *
-   * @param {String} message is the core information detail of your log entry. By reading it anyone should understand what the log entry is about.
+   * @param {String} message is the core information detail of your log entry.
+   * By reading it anyone should understand what the log entry is about.
    * @param {object} [payload] is a JSON object, usually a request or event payload.
    */
   public info (message: string, payload: Object = {}): void {
@@ -74,7 +99,8 @@ class Logger {
   /**
    * Generates an output log with severity level WARN.
    *
-   * @param {String} message is the core information detail of your log entry. By reading it anyone should understand what the log entry is about.
+   * @param {String} message is the core information detail of your log entry.
+   * By reading it anyone should understand what the log entry is about.
    * @param {object} [payload] is a JSON object, usually a request or event payload.
    */
   public warn (message: string, payload: Object = {}): void {
@@ -84,7 +110,8 @@ class Logger {
   /**
    * Generates an output log with severity level ERROR.
    *
-   * @param {String} message is the core information detail of your log entry. By reading it anyone should understand what the log entry is about.
+   * @param {String} message is the core information detail of your log entry.
+   * By reading it anyone should understand what the log entry is about.
    * @param {object} [payload] is a JSON object, usually a request or event payload.
    */
   public error (message: string, payload: Object = {}): void {
@@ -94,7 +121,8 @@ class Logger {
   /**
    * Generates an output log with severity level TRACE.
    *
-   * @param {String} message is the core information detail of your log entry. By reading it anyone should understand what the log entry is about.
+   * @param {String} message is the core information detail of your log entry.
+   * By reading it anyone should understand what the log entry is about.
    * @param {object} [payload] is a JSON object, usually a request or event payload.
    */
   public trace (message: string, payload: Object = {}): void {
@@ -121,7 +149,7 @@ class Logger {
       timestamp: new Date().toISOString()
     }
 
-    return JSON.stringify({ ...logEvent, ...payload })
+    return JSON.stringify({ ...logEvent, ...this.fields, ...payload })
   }
 }
 
