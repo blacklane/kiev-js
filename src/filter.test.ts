@@ -1,6 +1,6 @@
 import { AttributesFilter } from './filter'
 
-let attrsFilter: AttributesFilter
+let attributesFilter: AttributesFilter
 let filterConfig: string[]
 
 const logToBeFiltered = {
@@ -19,22 +19,22 @@ const logToBeFiltered = {
 
 describe('attributesFilter', () => {
   beforeEach(() => {
-    attrsFilter = new AttributesFilter(filterConfig)
+    attributesFilter = new AttributesFilter(filterConfig)
   })
 
-  describe('filter', () => {
-    describe('when filter has not attributes configured', () => {
-      it('returns the original json when not filter configured', () => {
+  describe('.run', () => {
+    describe('has not attributes configured', () => {
+      it('returns the original object', () => {
         expect.assertions(1)
 
         const expectedResult = logToBeFiltered
-        const response = attrsFilter.filter(logToBeFiltered)
+        const response = attributesFilter.run(logToBeFiltered)
 
         expect(response).toStrictEqual(expectedResult)
       })
     })
 
-    describe('when filter has attributes configured', () => {
+    describe('has attributes configured', () => {
       beforeEach(() => {
         filterConfig = [
           'firstName',
@@ -43,10 +43,10 @@ describe('attributesFilter', () => {
           'street',
           'clientToken'
         ]
-        attrsFilter = new AttributesFilter(filterConfig)
+        attributesFilter = new AttributesFilter(filterConfig)
       })
 
-      it('returns a new json with the params filtered', () => {
+      it('returns a new object with the filtered attributes', () => {
         expect.assertions(1)
 
         const expectedResult = {
@@ -62,7 +62,7 @@ describe('attributesFilter', () => {
             clientToken: '[FILTERED]'
           }
         }
-        const response = attrsFilter.filter(logToBeFiltered)
+        const response = attributesFilter.run(logToBeFiltered)
 
         expect(response).toStrictEqual(expectedResult)
       })

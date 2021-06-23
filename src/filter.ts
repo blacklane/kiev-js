@@ -12,7 +12,7 @@ class AttributesFilter {
    * @param {Object} attrs to be filtered
    * @return {Object} a new Object with filtered data
    */
-  public filter (attrs: Object): Object {
+  public run (attrs: Object): Object {
     return this.recursiveFilter(attrs)
   }
 
