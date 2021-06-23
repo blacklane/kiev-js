@@ -1,6 +1,7 @@
 import * as logger from 'loglevel'
+import { AttributesFilter } from './filter'
 
-interface LogMessage {
+interface LogDefaults {
   application: string
   environment: string
   level: string
@@ -21,11 +22,18 @@ class Logger {
   application: string
   environment: string
   fields: Object
+  attributesFilter: AttributesFilter
 
-  constructor (application: string, environment: string, fields: Object = {}) {
+  constructor (
+    application: string,
+    environment: string,
+    fields: Object = {},
+    filterConfigs: string[] = []
+  ) {
     this.application = application
     this.environment = environment
     this.fields = fields
+    this.attributesFilter = new AttributesFilter(filterConfigs)
   }
 
   /**
@@ -141,15 +149,22 @@ class Logger {
     message: string,
     payload: Object
   ): string {
-    const logEvent: LogMessage = {
+    const payloadDefault = this._defaults(severity, message)
+
+    const filteredPayload = this.attributesFilter.run(payload)
+
+    return JSON.stringify({ ...payloadDefault, ...filteredPayload })
+  }
+
+  private _defaults (severity: string, message: string): LogDefaults {
+    return {
       application: this.application,
       environment: this.environment,
       level: severity,
       message: message,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      ...this.fields
     }
-
-    return JSON.stringify({ ...logEvent, ...this.fields, ...payload })
   }
 }
 

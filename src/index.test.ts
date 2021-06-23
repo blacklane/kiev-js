@@ -11,8 +11,9 @@ let logMessage: string
 
 const logPayload = {
   user: {
-    first_name: 'John',
-    last_name: 'Doe'
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com'
   }
 }
 let defaultLogAttributes: string[]
@@ -41,6 +42,31 @@ describe('logger', () => {
 
       logger.setLevel(LogLevel.ERROR)
       expect(mockLogLevel.setLevel).toHaveBeenCalledWith(LogLevel.ERROR)
+    })
+  })
+
+  describe('constructor with filters', () => {
+    beforeEach(() => {
+      mockLogLevel.info.mockClear()
+    })
+
+    it('changes the current log level', () => {
+      expect.assertions(1)
+      const filters = ['email']
+      const logger = new Logger(applicationName, environment, {}, filters)
+
+      logger.info(logMessage, logPayload)
+      const message = JSON.parse(mockLogLevel.debug.mock.calls[0][0])
+
+      const expectedPayload = {
+        user: {
+          firstName: 'John',
+          lastName: 'Doe',
+          email: '[FILTERED]'
+        }
+      }
+
+      expect(message).toMatchObject(expectedPayload)
     })
   })
 
