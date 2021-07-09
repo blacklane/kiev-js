@@ -1,4 +1,4 @@
-class AttributesFilter {
+export class AttributesFilter {
   filteredText: string = '[FILTERED]'
   filters: string[]
 
@@ -24,7 +24,7 @@ class AttributesFilter {
 
       if (this.typeOfObject(value)) {
         map.set(key, this.recursiveFilter(value))
-      } else if (this.shouldNotFilter(key)) {
+      } else if (this.shouldKeep(key)) {
         map.set(key, value)
       } else {
         map.set(key, this.filteredText)
@@ -38,9 +38,7 @@ class AttributesFilter {
     return typeof value === 'object'
   }
 
-  private shouldNotFilter (key: string): boolean {
+  private shouldKeep (key: string): boolean {
     return !this.filters.includes(key)
   }
 }
-
-export { AttributesFilter }
