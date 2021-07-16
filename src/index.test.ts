@@ -1,13 +1,16 @@
 import * as logLevel from 'loglevel'
-import { Logger, LogLevel } from '.'
+import { Logger, LoggerConfig, LogLevel } from '.'
 
 jest.mock('loglevel')
 const mockLogLevel = logLevel as jest.Mocked<typeof logLevel>
 
+let defaultLogAttributes: string[]
 let logger: Logger
-let applicationName: string
-let environment: string
 let logMessage: string
+let loggerInitConfig: LoggerConfig
+
+const application = 'application-name'
+const environment = 'development'
 
 const logPayload = {
   user: {
@@ -16,12 +19,9 @@ const logPayload = {
     email: 'john.doe@example.com'
   }
 }
-let defaultLogAttributes: string[]
 
 describe('logger', () => {
   beforeAll(() => {
-    applicationName = 'application-name'
-    environment = 'development'
     defaultLogAttributes = [
       'application',
       'environment',
@@ -33,7 +33,12 @@ describe('logger', () => {
   })
 
   beforeEach(() => {
-    logger = new Logger(applicationName, environment)
+    loggerInitConfig = {
+      application: application,
+      environment: environment
+    }
+
+    logger = new Logger(loggerInitConfig)
   })
 
   describe('setLevel', () => {
@@ -52,8 +57,10 @@ describe('logger', () => {
 
     it('changes the current log level', () => {
       expect.assertions(1)
-      const filters = ['email']
-      const logger = new Logger(applicationName, environment, {}, filters)
+
+      loggerInitConfig.filterFields = ['email']
+
+      const logger = new Logger(loggerInitConfig)
 
       logger.info(logMessage, logPayload)
       const message = JSON.parse(mockLogLevel.debug.mock.calls[0][0])
@@ -79,15 +86,17 @@ describe('logger', () => {
       expect.assertions(4)
 
       const trackingId = 'passing fields to the constructor'
-      const log = new Logger(applicationName, environment, {
+
+      loggerInitConfig.initializedFields = {
         tracking_id: trackingId
-      })
+      }
+      const log = new Logger(loggerInitConfig)
 
       log.info(logMessage, logPayload)
 
       const message = JSON.parse(mockLogLevel.info.mock.calls[0][0])
 
-      expect(message.application).toStrictEqual(applicationName)
+      expect(message.application).toStrictEqual(application)
       expect(message.environment).toStrictEqual(environment)
       expect(message.tracking_id).toStrictEqual(trackingId)
       expect(message).toMatchObject(logPayload)
@@ -98,7 +107,10 @@ describe('logger', () => {
 
       const foo = 'foo'
       const bar = 'bar'
-      const log = new Logger(applicationName, environment, { foo })
+
+      loggerInitConfig.initializedFields = { foo }
+
+      const log = new Logger(loggerInitConfig)
 
       log.setFields({ foo: bar })
       log.info(logMessage)
@@ -112,9 +124,10 @@ describe('logger', () => {
 
       const trackingIdOld = 'old'
       const trackingId = 'new tracking id'
-      const log = new Logger(applicationName, environment, {
-        tracking_id: trackingIdOld
-      })
+
+      loggerInitConfig.initializedFields = { tracking_id: trackingIdOld }
+
+      const log = new Logger(loggerInitConfig)
 
       log.info(logMessage, { tracking_id: trackingId })
       const message1 = JSON.parse(mockLogLevel.info.mock.calls[0][0])
@@ -137,9 +150,10 @@ describe('logger', () => {
 
       const trackingId = 'tracking id'
 
-      const parent = new Logger(applicationName, environment, {
-        tracking_id: trackingId
-      })
+      loggerInitConfig.initializedFields = { tracking_id: trackingId }
+
+      const parent = new Logger(loggerInitConfig)
+
       const extended = parent.extend({ extend: 'extend' })
 
       parent.info(logMessage)
@@ -169,7 +183,7 @@ describe('logger', () => {
       expect(Object.keys(message)).toStrictEqual(
         expect.arrayContaining(defaultLogAttributes)
       )
-      expect(message.application).toStrictEqual(applicationName)
+      expect(message.application).toStrictEqual(application)
       expect(message.level).toStrictEqual(LogLevel.DEBUG)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
@@ -201,7 +215,7 @@ describe('logger', () => {
       expect(Object.keys(message)).toStrictEqual(
         expect.arrayContaining(defaultLogAttributes)
       )
-      expect(message.application).toStrictEqual(applicationName)
+      expect(message.application).toStrictEqual(application)
       expect(message.level).toStrictEqual(LogLevel.INFO)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
@@ -234,7 +248,7 @@ describe('logger', () => {
       expect(Object.keys(message)).toStrictEqual(
         expect.arrayContaining(defaultLogAttributes)
       )
-      expect(message.application).toStrictEqual(applicationName)
+      expect(message.application).toStrictEqual(application)
       expect(message.level).toStrictEqual(LogLevel.WARN)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
@@ -269,7 +283,7 @@ describe('logger', () => {
       expect(Object.keys(message)).toStrictEqual(
         expect.arrayContaining(defaultLogAttributes)
       )
-      expect(message.application).toStrictEqual(applicationName)
+      expect(message.application).toStrictEqual(application)
       expect(message.level).toStrictEqual(LogLevel.ERROR)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)
@@ -302,7 +316,7 @@ describe('logger', () => {
       expect(Object.keys(message)).toStrictEqual(
         expect.arrayContaining(defaultLogAttributes)
       )
-      expect(message.application).toStrictEqual(applicationName)
+      expect(message.application).toStrictEqual(application)
       expect(message.level).toStrictEqual(LogLevel.TRACE)
       expect(message.environment).toStrictEqual(environment)
       expect(message).toMatchObject(logPayload)

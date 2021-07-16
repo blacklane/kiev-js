@@ -18,22 +18,24 @@ enum LogLevel {
   SILENT = 'SILENT'
 }
 
+interface LoggerConfig {
+  application: string
+  environment: string
+  filterFields?: string[]
+  initializedFields?: Object
+}
+
 class Logger {
   application: string
   environment: string
-  fields: Object
-  attributesFilter: AttributesFilter
+  fields?: Object
+  filter: AttributesFilter
 
-  constructor (
-    application: string,
-    environment: string,
-    fields: Object = {},
-    filterConfigs: string[] = []
-  ) {
-    this.application = application
-    this.environment = environment
-    this.fields = fields
-    this.attributesFilter = new AttributesFilter(filterConfigs)
+  constructor (config: LoggerConfig) {
+    this.application = config.application
+    this.environment = config.environment
+    this.fields = config.initializedFields
+    this.filter = new AttributesFilter(config.filterFields)
   }
 
   /**
@@ -52,10 +54,16 @@ class Logger {
    * @param {Object} fields to be added to all log entries.
    */
   public extend (fields: Object): Logger {
-    return new Logger(this.application, this.environment, {
-      ...this.fields,
-      ...fields
-    })
+    let initConfig: LoggerConfig = {
+      application: this.application,
+      environment: this.environment,
+      initializedFields: {
+        ...this.fields,
+        ...fields
+      }
+
+    }
+    return new Logger(initConfig)
   }
 
   /**
@@ -151,7 +159,7 @@ class Logger {
   ): string {
     const payloadDefault = this._defaults(severity, message)
 
-    const filteredPayload = this.attributesFilter.run(payload)
+    const filteredPayload = this.filter.run(payload)
 
     return JSON.stringify({ ...payloadDefault, ...filteredPayload })
   }
@@ -168,4 +176,4 @@ class Logger {
   }
 }
 
-export { Logger, LogLevel }
+export { Logger, LoggerConfig, LogLevel }
