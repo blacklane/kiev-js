@@ -1,14 +1,7 @@
 import * as logger from 'loglevel'
+import { AttributesFilter } from './filter'
 
-interface LogMessage {
-  application: string
-  environment: string
-  level: string
-  message: string
-  timestamp: string
-}
-
-enum LogLevel {
+export enum LogLevel {
   TRACE = 'TRACE',
   DEBUG = 'DEBUG',
   INFO = 'INFO',
@@ -17,15 +10,24 @@ enum LogLevel {
   SILENT = 'SILENT'
 }
 
-class Logger {
+export interface LoggerConfig {
   application: string
   environment: string
-  fields: Object
+  filterFields?: string[]
+  initializedFields?: Object
+}
 
-  constructor (application: string, environment: string, fields: Object = {}) {
-    this.application = application
-    this.environment = environment
-    this.fields = fields
+export class Logger {
+  application: string
+  environment: string
+  fields?: Object
+  filter: AttributesFilter
+
+  constructor (config: LoggerConfig) {
+    this.application = config.application
+    this.environment = config.environment
+    this.fields = config.initializedFields
+    this.filter = new AttributesFilter(config.filterFields)
   }
 
   /**
@@ -44,10 +46,16 @@ class Logger {
    * @param {Object} fields to be added to all log entries.
    */
   public extend (fields: Object): Logger {
-    return new Logger(this.application, this.environment, {
-      ...this.fields,
-      ...fields
-    })
+    let initConfig: LoggerConfig = {
+      application: this.application,
+      environment: this.environment,
+      initializedFields: {
+        ...this.fields,
+        ...fields
+      }
+
+    }
+    return new Logger(initConfig)
   }
 
   /**
@@ -141,16 +149,19 @@ class Logger {
     message: string,
     payload: Object
   ): string {
-    const logEvent: LogMessage = {
+
+    const filteredPayload = this.filter.run(payload)
+
+    const log = {
       application: this.application,
       environment: this.environment,
       level: severity,
       message: message,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      ...this.fields,
+      ...filteredPayload
     }
 
-    return JSON.stringify({ ...logEvent, ...this.fields, ...payload })
+    return JSON.stringify({ ...log })
   }
 }
-
-export { Logger, LogLevel }
