@@ -1,7 +1,7 @@
 import * as logger from 'loglevel'
 import { AttributesFilter } from './filter'
 
-enum LogLevel {
+export enum LogLevel {
   TRACE = 'TRACE',
   DEBUG = 'DEBUG',
   INFO = 'INFO',
@@ -10,22 +10,14 @@ enum LogLevel {
   SILENT = 'SILENT'
 }
 
-interface LoggerConfig {
+export interface LoggerConfig {
   application: string
   environment: string
   filterFields?: string[]
   initializedFields?: Object
 }
 
-interface StandardPayload {
-  application: string
-  environment: string
-  level: string
-  message: string
-  timestamp: string
-}
-
-class Logger {
+export class Logger {
   application: string
   environment: string
   fields?: Object
@@ -157,23 +149,19 @@ class Logger {
     message: string,
     payload: Object
   ): string {
-    const payloadDefault = this._defaults(severity, message)
 
     const filteredPayload = this.filter.run(payload)
 
-    return JSON.stringify({ ...payloadDefault, ...filteredPayload })
-  }
-
-  private _defaults (severity: string, message: string): StandardPayload {
-    return {
+    const log = {
       application: this.application,
       environment: this.environment,
       level: severity,
       message: message,
       timestamp: new Date().toISOString(),
-      ...this.fields
+      ...this.fields,
+      ...filteredPayload
     }
+
+    return JSON.stringify({ ...log })
   }
 }
-
-export { Logger, LoggerConfig, LogLevel }
